@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -48,8 +49,8 @@ public class ThousandWordsScript : MonoBehaviour
         string Uppercase = AllWords[WordIndex].ToUpperInvariant();
         for (int i = 0; i < 5; i++)
             Displays[i].text = Uppercase[i].ToString();
-        Debug.LogFormat("[1000 Words #{0}] The display says {1}.", moduleId, AllWords[WordIndex].ToLowerInvariant());
-        Debug.LogFormat("[100 Words #{0}] You need to press {1}.", moduleId, WordIndex < 1000 ? "yes" : "no");
+        Debug.LogFormat("[1000 Words #{0}] The display says: {1}.", moduleId, AllWords[WordIndex]);
+        Debug.LogFormat("[1000 Words #{0}] You need to press: {1}.", moduleId, WordIndex < 1000 ? "YES" : "NO");
     }
 
     void PressButton(KMSelectable Button)
