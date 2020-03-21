@@ -70,48 +70,6 @@ public class ThousandWordsScript : MonoBehaviour
         }
     }
 
-    void PressYes()
-    {
-        int Sell = UnityEngine.Random.Range(0, 4);
-        Audio.PlaySoundAtTransform(SFX[Sell].name, transform);
-        Buttons[0].AddInteractionPunch(0.2f);
-        if (Playable != false)
-        {
-            if (WordIndex < 1000)
-            {
-                Submitted[Stage] = true;
-            }
-            Stage = Stage + 1;
-            GenerateAnswer();
-
-            if (Stage == 5)
-            {
-                AnswerCheck();
-            }
-        }
-    }
-
-    void PressNo()
-    {
-        int Steal = UnityEngine.Random.Range(0, 4);
-        Audio.PlaySoundAtTransform(SFX[Steal].name, transform);
-        Buttons[1].AddInteractionPunch(0.2f);
-        if (Playable != false && !ModuleSolved)
-        {
-            if (WordIndex > 999)
-            {
-                Submitted[Stage] = true;
-            }
-            Stage = Stage + 1;
-            GenerateAnswer();
-
-            if (Stage == 5)
-            {
-                AnswerCheck();
-            }
-        }
-    }
-
     void AnswerCheck()
     {
         if (!Submitted.Contains(false))
