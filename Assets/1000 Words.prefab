@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 23999324668908104}
   - component: {fileID: 114551995626560456}
   m_Layer: 0
-  m_Name: Frame
+  m_Name: Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4371169762766844}
   m_Layer: 0
-  m_Name: Selection Sector
+  m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4860506867781800}
   m_Layer: 0
-  m_Name: Ancillery
+  m_Name: Ancillary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -436,7 +436,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4607923995348608}
   m_Layer: 0
-  m_Name: The Everything
+  m_Name: Display and Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2037,8 +2037,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6812b9ded4f33304c94f1442d0d37cc2, type: 3}
   - {fileID: 8300000, guid: 5291f518acafef24594a4d7da95e5a8c, type: 3}
   - {fileID: 8300000, guid: 8b8c9d02e46aa97469312f26f6f6418e, type: 3}
-  Lunar: {fileID: 4900000, guid: e35e3fce4f93ba241849e045d16c2599, type: 3}
-  Selection:
+  WordBank: {fileID: 4900000, guid: 83cce02a59c00314581e6691f1dd334f, type: 3}
+  Buttons:
   - {fileID: 114196265073267486}
   - {fileID: 114069108813078940}
   Displays:
@@ -2047,7 +2047,7 @@ MonoBehaviour:
   - {fileID: 102916092933163614}
   - {fileID: 102598613766896094}
   - {fileID: 102989284798315598}
-  SelectionText:
+  ButtonTexts:
   - {fileID: 102863500123853132}
   - {fileID: 102334410844748518}
 --- !u!114 &114425255016157706
@@ -2126,7 +2126,7 @@ MonoBehaviour:
   m_Script: {fileID: -119419473, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModuleType: OneThousandWordAdvertisement
+  ModuleType: OneThousandWords
   ModuleDisplayName: 1000 Words
   RequiresTimerVisibility: 0
 --- !u!114 &114655179563210402
