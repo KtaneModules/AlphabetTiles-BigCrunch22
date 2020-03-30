@@ -26,6 +26,7 @@ public class ThousandWordsScript : MonoBehaviour
     private bool[] Submitted = { false, false, false, false, false };
     private int Stage = 0;
     private int WordIndex;
+    private int corrAns;
     private bool Playable = false;
 
     // Logging
@@ -49,18 +50,22 @@ public class ThousandWordsScript : MonoBehaviour
         string Uppercase = AllWords[WordIndex].ToUpperInvariant();
         for (int i = 0; i < 5; i++)
             Displays[i].text = Uppercase[i].ToString();
-        Debug.LogFormat("[1000 Words #{0}] The display says: {1}.", moduleId, AllWords[WordIndex]);
-        Debug.LogFormat("[1000 Words #{0}] You need to press: {1}.", moduleId, WordIndex < 1000 ? "YES" : "NO");
+        Debug.LogFormat("[1000 Words #{0}] <Stage {2}> The displayed word is: {1}.", moduleId, AllWords[WordIndex], Stage+1);
+        if (WordIndex < 1000)
+            corrAns = 0;
+        else
+            corrAns = 1;
+        Debug.LogFormat("[1000 Words #{0}] <Stage {2}> {3} therefore you need to press the '{1}' button.", moduleId, corrAns == 0 ? "YES" : "NO", Stage+1, corrAns == 0 ? "The word is in the manual's table," : "The word is not in the manual's table,");
     }
 
     void PressButton(KMSelectable Button)
     {
         int ix = Array.IndexOf(Buttons, Button);
-        Audio.PlaySoundAtTransform(SFX[UnityEngine.Random.Range(0, 4)].name, transform);
+        Audio.PlaySoundAtTransform(SFX[UnityEngine.Random.Range(0, 4)].name, Button.transform);
         Button.AddInteractionPunch(.2f);
         if (Playable && !ModuleSolved)
         {
-            Debug.LogFormat("[1000 Words #{0}] You pressed {1}.", moduleId, ButtonTexts[ix].text);
+            Debug.LogFormat("[1000 Words #{0}] <Stage {2}> You pressed the '{1}' button, moving to the next stage.", moduleId, ButtonTexts[ix].text, Stage+1);
             if (ix == 0 ? (WordIndex < 1000) : (WordIndex > 999))
                 Submitted[Stage] = true;
             Stage++;
@@ -77,7 +82,7 @@ public class ThousandWordsScript : MonoBehaviour
         {
             Module.HandlePass();
             ModuleSolved = true;
-            Debug.LogFormat("[1000 Words #{0}] Module solved!", moduleId);
+            Debug.LogFormat("[1000 Words #{0}] All 5 stages were correct. Module solved!", moduleId);
             int MessageIndex = UnityEngine.Random.Range(0, 10);
             switch (MessageIndex)
             {
@@ -137,11 +142,75 @@ public class ThousandWordsScript : MonoBehaviour
         Audio.PlaySoundAtTransform(SFX[5].name, transform);
         yield return new WaitForSecondsRealtime(1.5f);
         Module.HandleStrike();
-        Debug.LogFormat("[1000 Words #{0}] Strike! Resetting...", moduleId);
+        string wrongstages = "";
+        for (int i = 0; i < 5; i++)
+        {
+            if (!Submitted[i])
+                wrongstages += (i+1)+" ";
+        }
+        wrongstages = wrongstages.Trim();
+        Debug.LogFormat("[1000 Words #{0}] The following stages had incorrect inputs: {1}, therefore a strike has been given. Resetting back to stage 1...", moduleId, wrongstages);
         for (int i = 0; i < 5; i++)
             Submitted[i] = false;
         Stage = 0;
         ButtonTexts[0].text = "YES"; ButtonTexts[1].text = "NO";
         GenerateAnswer();
+    }
+
+    //twitch plays
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} yes/y [Presses the 'YES' button] | !{0} no/n [Presses the 'NO' button]";
+    #pragma warning restore 414
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (Regex.IsMatch(command, @"^\s*yes\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(command, @"^\s*y\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            Buttons[0].OnInteract();
+            if (Stage == 5 && Submitted.Contains(false))
+            {
+                yield return "strike";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(command, @"^\s*no\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(command, @"^\s*n\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            Buttons[1].OnInteract();
+            if (Stage == 5 && Submitted.Contains(false))
+            {
+                yield return "strike";
+            }
+            yield break;
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        int start = Stage;
+        if (start > 0)
+        {
+            Debug.LogFormat("[1000 Words {0}] Twitch Plays Autosolver: At least one of the previously inputted stages is incorrect, resetting...");
+            for (int i = 0; i < start; i++)
+            {
+                if (Submitted[i] == false)
+                {
+                    start = 0;
+                    Stage = 0;
+                    Submitted[0] = false;
+                    Submitted[1] = false;
+                    Submitted[2] = false;
+                    Submitted[3] = false;
+                    Submitted[4] = false;
+                    GenerateAnswer();
+                    break;
+                }
+            }
+        }
+        for (int i = start; i < 5; i++)
+        {
+            Buttons[corrAns].OnInteract();
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
