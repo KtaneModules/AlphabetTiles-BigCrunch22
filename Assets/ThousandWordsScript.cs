@@ -136,7 +136,7 @@ public class ThousandWordsScript : MonoBehaviour
                     ButtonText.text = "";
                 break;
         }
-        string[] Messages = new string[] { "SRSLY", "WHAT?", "BRUH!", "NOPE!", "     ", "HMMMM", " -_- ", "?????", "    ", "RESET" };
+        string[] Messages = new string[] { "SRSLY", "WHAT?", "BRUH!", "NOPE!", "     ", "HMMMM", " -_- ", "?????", "     ", "RESET" };
         for (int i = 0; i < 5; i++)
             Displays[i].text = Messages[MessageIndex][i].ToString();
         Audio.PlaySoundAtTransform(SFX[5].name, transform);
@@ -187,30 +187,17 @@ public class ThousandWordsScript : MonoBehaviour
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        int start = Stage;
-        if (start > 0)
-        {
-            Debug.LogFormat("[1000 Words {0}] Twitch Plays Autosolver: At least one of the previously inputted stages is incorrect, resetting...");
-            for (int i = 0; i < start; i++)
-            {
-                if (Submitted[i] == false)
-                {
-                    start = 0;
-                    Stage = 0;
-                    Submitted[0] = false;
-                    Submitted[1] = false;
-                    Submitted[2] = false;
-                    Submitted[3] = false;
-                    Submitted[4] = false;
-                    GenerateAnswer();
-                    break;
-                }
-            }
-        }
-        for (int i = start; i < 5; i++)
+		Stage = 0;
+		Submitted[0] = false;
+		Submitted[1] = false;
+		Submitted[2] = false;
+		Submitted[3] = false;
+		Submitted[4] = false;
+		GenerateAnswer();
+        for (int i = 0; i < 5; i++)
         {
             Buttons[corrAns].OnInteract();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 }
