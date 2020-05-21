@@ -197,7 +197,7 @@ public class ThousandWordsScript : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             Buttons[corrAns].OnInteract();
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
