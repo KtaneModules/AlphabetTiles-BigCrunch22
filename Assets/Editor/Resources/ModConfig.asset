@@ -11,12 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: OneThousandWords
-  title: 1000 Words
+  id: AlphabetTiles
+  title: Alphabet Tiles
   author: BigCrunch22
-  description: "\"The name is for the table. The actual amount is doubled.\"\r\n\r\nIdea
-    - Pruz\nImpletentor - BigCrunch22\r\n\r\nIf someone wants to add TP Support/Logging/Anything
-    useful, you have my approval for that."
+  description: "\"\"Cheerleader\" included.\"\n\r\nIdea/Implementor - BigCrunch22\r\n\nIf
+    someone wants to add TP Support/Logging/Anything useful, you have my approval
+    for that."
   version: 1.0
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: 64899ef0e47aff041b8dcafc5f86a466, type: 3}
+  previewImage: {fileID: 2800000, guid: 50a3d061bf4c4ba4180e444599d0966b, type: 3}
