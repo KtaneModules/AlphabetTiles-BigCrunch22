@@ -293,6 +293,7 @@ public class AlphabetTilesScript : MonoBehaviour
 	
 	IEnumerator Timer()
 	{
+		PlayTime = true;
 		for (int x = 0; x < Center.Length; x++)
 		{
 			Center[x].material = Colors[2];
@@ -316,6 +317,7 @@ public class AlphabetTilesScript : MonoBehaviour
 	
 	IEnumerator AMistake()
 	{
+		PlayTime = false;
 		for (int x = 0; x < Alphabet.Length; x++)
 		{
 			Alphabet[x].text = "";
@@ -354,6 +356,7 @@ public class AlphabetTilesScript : MonoBehaviour
 	
 	IEnumerator Winner()
 	{
+		PlayTime = false;
 		for (int x = 0; x < Alphabet.Length; x++)
 		{
 			Alphabet[x].text = "";
@@ -383,8 +386,12 @@ public class AlphabetTilesScript : MonoBehaviour
 	
 	//twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"To start the cycle of the module, use !{0} play | To toggle the sound in the cycle, use !{0} mute/unmute | To stop the cycle of the module, use !{0} stop | To select a letter during the countdown, use !{0} press [VALID LETTER FROM THE GRID]";
+    private readonly string TwitchHelpMessage = @"To start the cycle of the module, use !{0} play | To toggle the sound in the cycle, use !{0} mute/unmute | To stop the cycle of the module, use !{0} stop | To select a letter during the countdown, use !{0} press [VALID LETTER FROM THE GRID] or !{0} press [A-E][1-5] to press the designated coordinate of the tile (letters are columns and numbers are rows)";
     #pragma warning restore 414
+	
+	bool PlayTime = false;
+	string[] CoordinatesL = {"A", "B", "C", "D", "E"};
+	string[] CoordinatesN = {"1", "2", "3", "4", "5"};
 	
 	IEnumerator ProcessTwitchCommand(string command)
 	{
@@ -442,23 +449,39 @@ public class AlphabetTilesScript : MonoBehaviour
 				yield break;
 			}
 			
-			if (UtilityImages[0].sprite != Sprites[3])
+			if (PlayTime == false)
 			{
 				yield return "sendtochaterror You are not able to press these buttons at this moment. Command ignored.";
 				yield break;
 			}
 			
-			if (!parameters[1].ToUpper().EqualsAny(RegularAlphabet) || parameters[1].ToUpper() == ShuffledAlphabet[25])
+			if (parameters[1].Length == 1)
 			{
-				yield return "sendtochaterror Command being sent does not contain a valid single letter. Command ignored.";
-				yield break;
+				if (!parameters[1].ToUpper().EqualsAny(RegularAlphabet) || parameters[1].ToUpper() == ShuffledAlphabet[25])
+				{
+					yield return "sendtochaterror Command being sent does not contain a valid single letter. Command ignored.";
+					yield break;
+				}
+				
+				int Press = Array.IndexOf(ShuffledAlphabet, parameters[1].ToUpper());
+				
+				yield return "strike";
+				yield return "solve";
+				MainButtons[Press].OnInteract();
 			}
 			
-			int Press = Array.IndexOf(ShuffledAlphabet, parameters[1].ToUpper());
-			
-			yield return "strike";
-			yield return "solve";
-			MainButtons[Press].OnInteract();
+			if (parameters[1].Length == 2)
+			{
+				if (!parameters[1][0].ToString().ToUpper().EqualsAny(CoordinatesL) || !parameters[1][1].ToString().EqualsAny(CoordinatesN))
+				{
+					yield return "sendtochaterror Command being sent is not a valid coordinate. Command ignored.";
+					yield break;
+				}
+				
+				yield return "strike";
+				yield return "solve";
+				MainButtons[(Array.IndexOf(CoordinatesL, parameters[1][0].ToString().ToUpper()) * 5) + Array.IndexOf(CoordinatesN, parameters[1][1].ToString())].OnInteract();
+			}
 		}
 	}
 }
