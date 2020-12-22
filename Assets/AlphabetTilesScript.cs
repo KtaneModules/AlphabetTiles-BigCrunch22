@@ -470,7 +470,7 @@ public class AlphabetTilesScript : MonoBehaviour
 				MainButtons[Press].OnInteract();
 			}
 			
-			if (parameters[1].Length == 2)
+			else if (parameters[1].Length == 2)
 			{
 				if (!parameters[1][0].ToString().ToUpper().EqualsAny(CoordinatesL) || !parameters[1][1].ToString().EqualsAny(CoordinatesN))
 				{
@@ -480,7 +480,7 @@ public class AlphabetTilesScript : MonoBehaviour
 				
 				yield return "strike";
 				yield return "solve";
-				MainButtons[(Array.IndexOf(CoordinatesL, parameters[1][0].ToString().ToUpper()) * 5) + Array.IndexOf(CoordinatesN, parameters[1][1].ToString())].OnInteract();
+				MainButtons[(Array.IndexOf(CoordinatesN, parameters[1][1].ToString()) * 5) % 25 + Array.IndexOf(CoordinatesL, parameters[1][0].ToString().ToUpper())].OnInteract();
 			}
 		}
 	}
