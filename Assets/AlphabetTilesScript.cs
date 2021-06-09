@@ -171,7 +171,7 @@ public class AlphabetTilesScript : MonoBehaviour
 			Sequence += c < 5 ? LettersShown[c] + ", " : LettersShown[c];
 		}
 		MainAnswer = RegularAlphabet[NumberVariable];
-		Debug.LogFormat("[Alphabet Tiles #{0}] Staring Letter: {1} - Missing Letter: {2}", moduleId, Basis.text, ShuffledAlphabet[25]);
+		Debug.LogFormat("[Alphabet Tiles #{0}] Starting Letter: {1} - Missing Letter: {2}", moduleId, Basis.text, ShuffledAlphabet[25]);
 		Debug.LogFormat("[Alphabet Tiles #{0}] {1} ", moduleId, Sequence);
 		Debug.LogFormat("[Alphabet Tiles #{0}] Sequence To The Answer If Done Properly (Starting From The Initial Letter): {1} ", moduleId, CycleIfProper);
 		Debug.LogFormat("[Alphabet Tiles #{0}] The Answer: {1}", moduleId, MainAnswer);
